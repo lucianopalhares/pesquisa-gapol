@@ -1,0 +1,59 @@
+ROTAS API PESQUISAGAPOL
+
+api/campanhas?status=Ativo   metodo get (PEGA OS DIAGNOSTICOS)
+api/login-api    metodo post (LOGAR E PEGAR OS DADOS DO USUARIO)
+
+api/responder-campanha   metodo post   (RESPONDER DIAGNOSTICO)
+    parametros:
+         create_delete = create ou delete (neste caso create)--> create_delete=create
+         campaign_id = id do diagnostico
+         question_id = pergunta que vai responder
+         answers  =  array com os ids das respostas selecionadas (ids da tabela answers)
+
+
+******************************************
+
+api/responder-campanha    METODO POST
+
+SE A PERGUNTA JA EXISTE
+
+escolher uma resposta pra pergunta
+
+{
+'campaign_id':0,
+'question_id':0,
+'answer_id':
+}
+
+resposta nao existe entao precisa escrever uma
+
+{
+'campaign_id':0,
+'question_id':0,
+'answer_description':'qualquer resposta digitada',
+'save_answer':'Sim ou Nao'
+}
+
+escolher uma ou mais respostas q ja existem
+
+{
+'campaign_id':0,
+'question_id':0,
+'answers':[1,6,1,5]
+}
+
+SE A PERGUNTA NAO EXISTE
+
+{
+'campaign_id':0,
+'question_description':'qualquer pergunta digitada',
+'answer_description':'qualquer resposta digitada',
+'save_question_answer':'Sim ou Nao'
+}
+
+
+question_id => id da pergunta
+answer_id => id da resposta
+answers => array com id das respostas escolhidas
+save_answer => Sim ou Nao (para salvar na tabela de respostas a resposta digitada)
+save_question_answer => Sim ou Nao (para salvar a pergunta e a respostas digitadas nas suas tabelas)
