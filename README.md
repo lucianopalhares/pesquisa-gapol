@@ -7,6 +7,7 @@
 ## Laravel 7 - Diagnóstico PERGUNTA/RESPOSTA
 
 Painel administrativo para pesquisa de diagnóstico:<br />
+
 * Diagnóstico<br />
 * Perguntas do Diagnóstico<br />
 * Categoria da Pergunta  <br />
@@ -14,6 +15,9 @@ Painel administrativo para pesquisa de diagnóstico:<br />
 * Respostas da Pergunta (podendo ser uma opção da pergunta ou descrição)<br />
 * Cadastro de Usuário<br />
 * ACL (controle de acesso completo: cargos e permissões dos usuários)<br />
+
+<p align="center"><img src="public/img/screens/home.png" >
+</p>
 
 * Cruzamento de Perguntas Selecionadas<br />
 <p align="center"><img src="public/img/screens/cruzamento.png" >
