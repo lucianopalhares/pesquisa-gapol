@@ -19,6 +19,13 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/login-api','Auth\LoginApiController@login');
+Route::get('/login-api',function(){
+  if(\Auth::user()){
+    return response()->json(['status'=>true,'msg'=>'Usuário logado','data'=>\Auth::user()]);
+  }else{
+    return response()->json(['status'=>false,'msg'=>'Usuario nao logado']);
+  }
+})->name('login-api');
 
 Route::get('/dashboard', 'HomeController@index');
 Route::resource('/usuarios','UserController')->middleware('auth');
@@ -60,3 +67,11 @@ Route::post('/responder-campanha','CampaignController@saveCampaignAnswer')->midd
 Route::get('/respondidas/{campaign}','CampaignController@answers')->middleware('auth');
 
 Route::resource('/campanha-respostas','CampaignAnswerController')->middleware('auth');
+
+
+//cruzamento de Respostas
+Route::get('/questions-cruze','CruzeAnswerController@questions');
+Route::get('/answers-cruze/{question}','CruzeAnswerController@answers');
+Route::post('/cruze-data','CruzeAnswerController@cruze');
+//cruzamento de Perguntas
+Route::get('/cruzar-perguntas-selecionadas','CruzeQuestionController@cruze');

@@ -15,9 +15,13 @@ class CreateCampaignAnswersTable extends Migration
     {
         Schema::create('campaign_answers', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('interviewee_id');
+            $table->foreign('interviewee_id')->references('id')->on('interviewees');
             $table->unsignedBigInteger('question_id');
+            $table->foreign('question_id')->references('id')->on('questions');
             $table->text('question_description');
-            $table->unsignedBigInteger('answer_id');
+            $table->unsignedBigInteger('answer_id')->nullable();
+            $table->foreign('answer_id')->references('id')->on('answers');
             $table->text('answer_description');
             $table->unsignedBigInteger('campaign_id');
             $table->foreign('campaign_id')->references('id')->on('campaigns');

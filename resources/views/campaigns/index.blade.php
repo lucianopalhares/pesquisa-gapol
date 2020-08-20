@@ -58,13 +58,13 @@
                   @endcan
 
                   @can('create-campaign_answer', $item)
-                    @if(!$item->answers()->exists()or$item->answers->count()<\App\Question::count())
+
                     <a href="{{ url('responder-campanha/'.$item->id)  }}" class="btn btn-secondary btn-sm"><i class="fa fa-registered"></i> Responder</a>
-                    @endif
+
                   @endcan
 
                   @can('viewAny-campaign_answer', $item)
-                    @if($item->answers()->exists())
+                    @if($item->answersCount()>0)
                       <a href="{{ url('respondidas/'.$item->id)  }}" class="btn btn-info btn-sm"><i class="fa fa-question"></i> Respostas</a>
                     @endif
                   @endcan

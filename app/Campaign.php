@@ -19,4 +19,9 @@ class Campaign extends Model
     {
         return $this->hasMany(\App\CampaignAnswer::class,'campaign_id');
     }
+    public function answersCount()
+    {
+        return \App::make('App\CampaignAnswer')->whereCampaignId($this->id)->count();
+    }
+
 }

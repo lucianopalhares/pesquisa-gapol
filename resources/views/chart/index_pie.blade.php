@@ -3,34 +3,75 @@
 @section('content')
 
 @push('css')
-
+  <link href="{{asset('/')}}css/select2.min.css" rel="stylesheet" />
+  <style>
+      .note-group-select-from-files {
+        display: none;
+      }
+      .select2-container {
+      width: 100% !important;
+      padding: 0;
+      }
+  </style>
 @endpush
 
   <!-- Page Heading -->
-  <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800"><i class="fa fa-dashboard" aria-hidden="true"></i> Gráficos das Respostas</h1>
+  <div class="align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800 text-center"><i class="fa fa-dashboard" aria-hidden="true"></i>
+      Gráficos das Respostas @if($campaign)<i>(Diagnóstico: {{$campaign->name}})</i>@endif
+    </h1>
     <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Gerar Relatorio</a>-->
   </div>
 
-<!--
   <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8">
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Earnings (Monthly)</div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
-            </div>
-            <div class="col-auto">
-              <i class="fas fa-calendar fa-2x text-gray-300"></i>
-            </div>
-          </div>
+          <form>
+
+                    <div class="form-group label-floating">
+
+                        <select required="required" class="form-control" name="questions[]" multiple="multiple" onchange="changeFormAction()">
+                          <option value=" ">Filtrar por Perguntas</option>
+                            @foreach($allquestions as $q)
+
+                                <option value="{{$q->id}}">
+                                  {{$q->description}}
+                                </option>
+
+                            @endforeach
+                        </select>
+                    </div>
+
+        </form>
+
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+
+  <div id="verGraficoButton">
+    <div class="row">
+      <div class="col-md-12 text-center float-center">
+
+        <button type="button" class="badge badge-success" onclick="verGrafico()"><i class="fa fa-share"></i> Ver Gráfico das Perguntas Selecionadas</button>
+      </div>
+    </div>
+  </div>
+
+  @if(\request()->has('perguntas'))
+    <div id="verGraficoButton">
+      <div class="row">
+        <div class="col-md-12 text-center float-center">
+
+            <a href="{{url('/graficos-diagnostico/'.$campaign->id)}}" class="badge badge-secondary"><i class="fa fa-share"></i>Ver Todas Perguntas</a>
+
         </div>
       </div>
     </div>
+  @endif
 
+<!--
+  <div class="row">
     <div class="col-xl-3 col-md-6 mb-4">
       <div class="card border-left-success shadow h-100 py-2">
         <div class="card-body">
@@ -88,21 +129,24 @@
         </div>
       </div>
     </div>
+
   </div>
 -->
 @foreach($questions as $question)
+
 
   <div class="row">
 
     <!-- Area Chart -->
     <div class="col-xl-12 col-lg-7">
       <div class="card shadow mb-4">
-        <!-- Card Header - Dropdown -->
+        <!--
         <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-          <h6 class="m-0 font-weight-bold text-primary">{{$question->description}}</h6>
+          <h6 class="m-0 font-weight-bold text-primary"></h6>
+
           <div class="dropdown no-arrow">
             <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+              <small><i></i></small>
             </a>
             <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
               <div class="dropdown-header">Dropdown Header:</div>
@@ -112,12 +156,16 @@
               <a class="dropdown-item" href="#">Something else here</a>
             </div>
           </div>
-        </div>
+
+        </div>-->
+
         <!-- Card Body -->
         <div class="card-body">
-          <div class="chart-area">
-            <canvas id="myBarChart{{$question->id}}"></canvas>
+          @if(!$question->answers()->exists())   @endif
+          <div class="chart-pie">
+            <canvas id="myPieChart{{$question->id}}"></canvas>
           </div>
+
         </div>
       </div>
     </div>
@@ -309,11 +357,8 @@
 <script type="text/javascript">
 // Set new default font family and font color to mimic Bootstrap's default styling
 Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#858796';
+Chart.defaults.global.defaultFontColor = 'black';
 
-
-var answers = [];
-var campaign_answers = [];
 
 
 function number_format(number, decimals, dec_point, thousands_sep) {
@@ -340,113 +385,116 @@ function number_format(number, decimals, dec_point, thousands_sep) {
   }
   return s.join(dec);
 }
-</script>
 
-@foreach($questions as $question)
+function randomColorGenerator() {
+    return '#' + (Math.random().toString(16) + '0000000').slice(2, 8);
+}
 
-  @foreach($question->answers as $answer)
-
-    @if($answer->campaigns()->exists())
-    <script type="text/javascript">
-
-      (function($) {
-          "use strict"; // Start of use strict
-          answers.push("{{$answer->description}}");
-          campaign_answers.push("{{$answer->campaigns()->count()}}");
-      })(jQuery); // End of use strict
-
-    </script>
-    @endif
-  @endforeach
-@endforeach
-
-@foreach($questions as $question)
-
-<script type="text/javascript">
-// Bar Chart Example
-var ctx{{$question->id}} = document.getElementById("myBarChart{{$question->id}}");
-var myBarChart{{$question->id}} = new Chart(ctx{{$question->id}}, {
-  type: 'bar',
-  data: {
-    labels: answers,
-    datasets: [{
-      label: "Revenue",
-      backgroundColor: "#4e73df",
-      hoverBackgroundColor: "#2e59d9",
-      borderColor: "#4e73df",
-      data: campaign_answers,
-    }],
-  },
-  options: {
-    maintainAspectRatio: false,
-    layout: {
-      padding: {
-        left: 10,
-        right: 25,
-        top: 25,
-        bottom: 0
-      }
-    },
-    scales: {
-      xAxes: [{
-        time: {
-          unit: 'month'
-        },
-        gridLines: {
-          display: false,
-          drawBorder: false
-        },
-        ticks: {
-          maxTicksLimit: 6
-        },
-        maxBarThickness: 25,
-      }],
-      yAxes: [{
-        /*ticks: {
-          min: 0,
-          max: 15000,
-          maxTicksLimit: 5,
-          padding: 10,
-          // Include a dollar sign in the ticks
-          callback: function(value, index, values) {
-            //return '$' + number_format(value);
-            return value;
-          }
-        },*/
-        gridLines: {
-          color: "rgb(234, 236, 244)",
-          zeroLineColor: "rgb(234, 236, 244)",
-          drawBorder: false,
-          borderDash: [2],
-          zeroLineBorderDash: [2]
-        }
-      }],
-    },
-    legend: {
-      display: false
-    },
-    tooltips: {
-      titleMarginBottom: 10,
-      titleFontColor: '#6e707e',
-      titleFontSize: 14,
-      backgroundColor: "rgb(255,255,255)",
-      bodyFontColor: "#858796",
-      borderColor: '#dddfeb',
-      borderWidth: 1,
-      xPadding: 15,
-      yPadding: 15,
-      displayColors: false,
-      caretPadding: 10,
-      callbacks: {
-        label: function(tooltipItem, chart) {
-          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
-          return datasetLabel + ': $' + number_format(tooltipItem.yLabel);
-        }
-      }
-    },
-  }
+$(function() {
+    window.onbeforeprint = beforePrintHandler;
 });
-</script>
-@endforeach
+@foreach($questions as $question)
 
+    var answers{{$question->id}} = [];
+    var campaign_answers{{$question->id}} = [];
+    var campaign_answers_color{{$question->id}} = [];
+
+
+      @foreach($question->answers_chart as $answer => $answer_total)
+
+        <?php $random = rand(); ?>
+
+        let description{{$random}} = "{{preg_replace('/\s+/', ' ', $answer)}}";
+        let answer_count{{$random}} = "{{$answer_total}}";
+
+          (function($) {
+              "use strict"; // Start of use strict
+              answers{{$question->id}}.push(description{{$random}});
+              campaign_answers{{$question->id}}.push(answer_count{{$random}});
+              campaign_answers_color{{$question->id}}.push(randomColorGenerator());
+          })(jQuery); // End of use strict
+
+      @endforeach
+
+
+  // Pie Chart Example
+  var ctx{{$question->id}} = document.getElementById("myPieChart{{$question->id}}");
+
+  var myPieChart{{$question->id}} = new Chart(ctx{{$question->id}}, {
+    type: 'doughnut',
+    data: {
+      labels: answers{{$question->id}},
+      datasets: [{
+        data: campaign_answers{{$question->id}},
+        backgroundColor: campaign_answers_color{{$question->id}} ,
+        hoverBackgroundColor: campaign_answers_color{{$question->id}} ,
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      legend: {
+        display: true,
+        labels: {
+              fontColor: 'black'
+             }
+
+      },
+      title: {
+          display: true,
+          fontColor: 'blue',
+          text: "{{preg_replace('/\s+/', ' ', $question->description)}}"
+      },
+      cutoutPercentage: 80,
+    },
+  });
+
+@endforeach
+</script>
+<script src="{{asset('/')}}js/select2.min.js"></script>
+
+  <script type="text/javascript">
+
+    var url = null;
+
+    $(document).ready(function(){
+      $('select').select2({
+        placeholder: "Filtrar por Perguntas",
+      });
+      $('#verGraficoButton').hide();
+    });
+
+    function changeFormAction() {
+      $('#verGraficoButton').hide();
+      url = null;
+      var campaign_id = "{{$campaign->id}}";
+
+      var questions = $('select').select2('data');
+
+      if(questions.length>0){
+        let questionsString = '';
+        for (let i = 0; i < questions.length; ++i) {
+          if(i>0){
+            questionsString = questionsString + ','
+          }
+          questionsString = questionsString + questions[i].id;
+
+        }
+        url = "/graficos-diagnostico" +"/"+ campaign_id + "?perguntas="+questionsString;
+        $('#verGraficoButton').show();
+      }
+    }
+
+    function verGrafico() {
+      if(url){
+        this.document.location.href = url;
+      }
+    }
+    function beforePrintHandler () {
+      for (var id in Chart.instances) {
+        Chart.instances[id].resize()
+      }
+    }
+  </script>
 @endpush

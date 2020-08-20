@@ -55,7 +55,7 @@ class QuestionController extends Controller
 
         $items = $this->model::all();
 
-        if($is_api) return response()->json($items);
+        if($is_api) return response()->json($this->model::with('answers')->get());
 
         return view('questions.index',compact('items'));
 
@@ -338,7 +338,7 @@ class QuestionController extends Controller
             $model->multiple_choice = $request->multiple_choice;
             $model->required = $request->required;
             $model->tap_answer = $request->tap_answer;
-            
+
             $save = $model->save();
 
             $response = 'Pergunta';

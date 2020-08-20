@@ -20,8 +20,12 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', 'HomeController@index');
-Route::get('/graficos', 'HomeController@chart');
+Route::get('/test', 'HomeController@test');
+Route::get('/test-save', 'HomeController@startTestSave');
+
+Route::get('/dashboard', 'HomeController@index')->middleware('auth');
+Route::get('/graficos-diagnostico/{campaign}', 'ChartController@index')->middleware('auth');
+Route::get('/graficos', 'ChartController@create')->middleware('auth');
 Route::resource('/usuarios','UserController')->middleware('auth');
 Route::get('/usuario/{usuario}/cargos','UserController@roles')->middleware('auth');
 
@@ -61,3 +65,8 @@ Route::post('/responder-campanha','CampaignController@saveCampaignAnswer')->midd
 Route::get('/respondidas/{campaign}','CampaignController@answers')->middleware('auth');
 
 Route::resource('/campanha-respostas','CampaignAnswerController')->middleware('auth');
+
+
+//cruzar Respostas
+Route::get('/cruzar-respostas','CruzeAnswerController@create')->middleware('auth');
+Route::get('/cruzar-perguntas','CruzeQuestionController@create')->middleware('auth');

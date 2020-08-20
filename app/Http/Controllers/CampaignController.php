@@ -59,9 +59,9 @@ class CampaignController extends Controller
         }
 
         if(isset($request->status)){
-          $items = $this->model::with('campaign_answers')->whereStatus($request->status)->get();
+          $items = $this->model::whereStatus($request->status)->get();
         }else{
-          $items = $this->model::with('campaign_answers')->get();
+          $items = $this->model::all();
         }
 
         if($is_api) return response()->json($items);
@@ -487,74 +487,71 @@ class CampaignController extends Controller
             $is_api = true;
         }
 
-          $rules = [
-            'campaign_id' => ['required', 'integer'],
-          ];
+        $data = $request->all();
 
-          $messages = [
-            'campaign_id.required' => "Selecione o diagnóstico"
-          ];
+        foreach ($data as $key => $value) {
 
-          if(isset($request->question_id)){
-            $rules['question_id'] = ['required'];
-            $messages['question_id.required'] = 'Selecione a Pergunta';
-            if(isset($request->answer_id)){
-              $rules['answer_id'] = ['required'];
-              $messages['answer_id.required'] = 'Selecione a Resposta';
-            }elseif(isset($request->answer_description)){
+          $request = (object) [];
+
+          isset($value['campaign_id'])?$request->campaign_id = $value['campaign_id']:'';
+          isset($value['question_id'])?$request->question_id = $value['question_id']:'';
+          isset($value['answer_id'])?$request->answer_id = $value['answer_id']:'';
+          isset($value['question_description'])?$request->question_description = $value['question_description']:'';
+          isset($value['answer_description'])?$request->answer_description = $value['answer_description']:'';
+          isset($value['answers'])?$request->answers = $value['answers']:'';
+          isset($value['save_answer'])?$request->save_answer = $value['save_answer']:'';
+          isset($value['save_question_answer'])?$request->save_question_answer = $value['save_question_answer']:'';
+
+
+            $rules = [
+              'campaign_id' => ['required', 'integer'],
+            ];
+
+            $messages = [
+              'campaign_id.required' => "Selecione o diagnóstico"
+            ];
+
+            if(isset($request->question_id)){
+              $rules['question_id'] = ['required'];
+              $messages['question_id.required'] = 'Selecione a Pergunta';
+              if(isset($request->answer_id)){
+                $rules['answer_id'] = ['required'];
+                $messages['answer_id.required'] = 'Selecione a Resposta';
+              }elseif(isset($request->answer_description)){
+                $rules['answer_description'] = ['required'];
+                $messages['answer_description.required'] = 'Digite a Resposta';
+                $rules['save_answer'] = ['required'];
+                $messages['save_answer.required'] = 'Escolha se deseja salvar a resposta (Sim/Nao)';
+              }else{
+                $rules['answers'] = ['required'];
+                $messages['answers.required'] = 'Selecione as Respostas';
+              }
+            }else{
+
+              $rules['save_question_answer'] = ['required'];
+              $messages['save_question_answer.required'] = 'Escolha se deseja salvar a pergunta e resposta digitadas (Sim/Nao)';
+              $rules['question_description'] = ['required'];
+              $messages['question_description.required'] = 'Digite a Pergunta';
               $rules['answer_description'] = ['required'];
               $messages['answer_description.required'] = 'Digite a Resposta';
-              $rules['save_answer'] = ['required'];
-              $messages['save_answer.required'] = 'Escolha se deseja salvar a resposta (Sim/Nao)';
-            }else{
-              $rules['answers'] = ['required'];
-              $messages['answers.required'] = 'Selecione as Respostas';
             }
-          }else{
 
-            $rules['save_question_answer'] = ['required'];
-            $messages['save_question_answer.required'] = 'Escolha se deseja salvar a pergunta e resposta digitadas (Sim/Nao)';
-            $rules['question_description'] = ['required'];
-            $messages['question_description.required'] = 'Digite a Pergunta';
-            $rules['answer_description'] = ['required'];
-            $messages['answer_description.required'] = 'Digite a Resposta';
+          $validator = Validator::make((array) $request, $rules, $messages);
+
+          if ($validator->fails()) {
+
+              if ($is_api) {
+                return response()->json(['status'=>false,'msg'=>$validator->errors()]);
+              }else{
+                return redirect()->back()
+                          ->withErrors($validator->errors())
+                          ->withInput();
+              }
           }
 
-        $validator = Validator::make($request->all(), $rules, $messages);
+          $campaign = $this->model::findOrFail($request->campaign_id);
 
-        if ($validator->fails()) {
-
-            if ($is_api) {
-              return response()->json(['status'=>false,'msg'=>$validator->errors()]);
-            }else{
-              return redirect()->back()
-                        ->withErrors($validator->errors())
-                        ->withInput();
-            }
-        }
-
-        $campaign = $this->model::findOrFail($request->campaign_id);
-
-        if($campaign->status=='Inativa'){
-
-          $message = 'Campanha Inativa';
-
-          if ($is_api) {
-            return response()->json(['status'=>false,'msg'=>$message]);
-          }else{
-            return redirect()->back()
-                      ->withErrors($message)
-                      ->withInput();
-          }
-        }
-        if($campaign->status=='Ativa por Data'){
-
-          $start = \Carbon\Carbon::parse($campaign->start);
-          $end = \Carbon\Carbon::parse($campaign->end);
-          $now = \Carbon\Carbon::now()->format('Y-m-d');
-          //$diff = $end->diffInDays($now);
-
-          if($start>$now||$end<$now){
+          if($campaign->status=='Inativa'){
 
             $message = 'Campanha Inativa';
 
@@ -566,64 +563,46 @@ class CampaignController extends Controller
                         ->withInput();
             }
           }
-        }
+          if($campaign->status=='Ativa por Data'){
 
-        if(\Gate::denies('create-campaign_answer')){
+            $start = \Carbon\Carbon::parse($campaign->start);
+            $end = \Carbon\Carbon::parse($campaign->end);
+            $now = \Carbon\Carbon::now()->format('Y-m-d');
+            //$diff = $end->diffInDays($now);
 
-          $message = 'Acesso não Autorizado: RESPONDER CAMPANHA';
+            if($start>$now||$end<$now){
 
-          if ($is_api) {
-            return response()->json(['status'=>false,'msg'=>$message]);
-          }else{
-            return redirect()->back()
-                      ->withErrors($message)
-                      ->withInput();
+              $message = 'Campanha Inativa';
+
+              if ($is_api) {
+                return response()->json(['status'=>false,'msg'=>$message]);
+              }else{
+                return redirect()->back()
+                          ->withErrors($message)
+                          ->withInput();
+              }
+            }
           }
-        }
 
-        try {
+          if(\Gate::denies('create-campaign_answer')){
 
-              if(isset($request->question_id)){
+            $message = 'Acesso não Autorizado: RESPONDER CAMPANHA';
 
-                $exists = $this->campaign_answer::whereCampaignId($request->campaign_id)->whereQuestionId($request->question_id)->count();
+            if ($is_api) {
+              return response()->json(['status'=>false,'msg'=>$message]);
+            }else{
+              return redirect()->back()
+                        ->withErrors($message)
+                        ->withInput();
+            }
+          }
 
-                if($exists){
-                  $message = 'Pergunta ja Respondida!';
+          try {
 
-                  if ($is_api) {
-                    return response()->json(['status'=>false,'msg'=>$message]);
-                  }else{
-                    return redirect()->back()
-                              ->withErrors($message)
-                              ->withInput();
-                  }
-                }
-                if(isset($request->answers)){
+                if(isset($request->question_id)){
 
-                  $answers = $request->input('answers');
-
-                  $multiple_choice = $this->question::findOrFail($request->question_id)->multiple_choice;
-
-                  if($multiple_choice){
-
-                      foreach($answers as $answer){
-
-                          $questionFind = $this->question::findOrFail($request->question_id);
-                          $answerFind = $this->answer::findOrFail($answer);
-
-                          $model = new $this->campaign_answer;
-
-                          $model->campaign_id = $request->campaign_id;
-                          $model->question_id = $request->question_id;
-                          $model->question_description = $questionFind->description;
-                          $model->answer_id = $answer;
-                          $model->answer_description = $answerFind->description;
-                          $save = $model->save();
-                      }
-
-                  }else{
-                    if(sizeof($answers)>1){
-                      $message = 'Escolha apenas uma Opção';
+                  if(!$this->question->find($request->question_id)){
+                      $message = 'Pergunta '.$request->question_id.' nao existe na base de dados!';
 
                       if ($is_api) {
                         return response()->json(['status'=>false,'msg'=>$message]);
@@ -632,101 +611,230 @@ class CampaignController extends Controller
                                   ->withErrors($message)
                                   ->withInput();
                       }
+                  }
+
+                  /*$exists = $this->campaign_answer::whereCampaignId($request->campaign_id)->whereQuestionId($request->question_id)->count();
+
+                  if($exists){
+                    $message = 'Pergunta ja Respondida!';
+
+                    if ($is_api) {
+                      return response()->json(['status'=>false,'msg'=>$message]);
+                    }else{
+                      return redirect()->back()
+                                ->withErrors($message)
+                                ->withInput();
                     }
+                  }*/
+                  if(isset($request->answer_id)){
+
+                      if(!$this->answer->find($request->answer_id)){
+                          $message = 'Resposta '.$request->answer_id.' nao existe na base de dados!';
+
+                          if ($is_api) {
+                            return response()->json(['status'=>false,'msg'=>$message]);
+                          }else{
+                            return redirect()->back()
+                                      ->withErrors($message)
+                                      ->withInput();
+                          }
+                      }
+
+                      $questionFind = $this->question::findOrFail($request->question_id);
+                      $answerFind = $this->answer::findOrFail($request->answer_id);
+
+                      $model = new $this->campaign_answer;
+
+                      $model->campaign_id = $request->campaign_id;
+                      $model->question_id = $request->question_id;
+                      $model->question_description = $questionFind->description;
+                      $model->answer_id = $request->answer_id;
+                      $model->answer_description = $answerFind->description;
+                      $save = $model->save();
+
+                  }elseif(isset($request->answers)&&sizeof($request->answers)>0){
+
+                    $answers = $request->answers;
+
+                    $multiple_choice = $this->question::findOrFail($request->question_id)->multiple_choice;
+
+                    if($multiple_choice){
+
+                        foreach($answers as $answer){
+
+                            if(!$this->answer->find($answer)){
+                                $message = 'Resposta '.$answer.' nao existe na base de dados!';
+
+                                if ($is_api) {
+                                  return response()->json(['status'=>false,'msg'=>$message]);
+                                }else{
+                                  return redirect()->back()
+                                            ->withErrors($message)
+                                            ->withInput();
+                                }
+                            }
+
+                            $questionFind = $this->question::findOrFail($request->question_id);
+                            $answerFind = $this->answer::findOrFail($answer);
+
+                            $model = new $this->campaign_answer;
+
+                            $model->campaign_id = $request->campaign_id;
+                            $model->question_id = $request->question_id;
+                            $model->question_description = $questionFind->description;
+                            $model->answer_id = $answer;
+                            $model->answer_description = $answerFind->description;
+                            $save = $model->save();
+                        }
+
+                    }else{
+                      if(sizeof($answers)>1){
+                        $message = 'Escolha apenas uma Opção';
+
+                        if ($is_api) {
+                          return response()->json(['status'=>false,'msg'=>$message]);
+                        }else{
+                          return redirect()->back()
+                                    ->withErrors($message)
+                                    ->withInput();
+                        }
+                      }
+                      $questionFind = $this->question::findOrFail($request->question_id);
+                      $answerFind = $this->answer::findOrFail($answers[0]);
+
+                      if(!$this->answer->find($answers[0])){
+                          $message = 'Resposta '.$answers[0].' nao existe na base de dados!';
+
+                          if ($is_api) {
+                            return response()->json(['status'=>false,'msg'=>$message]);
+                          }else{
+                            return redirect()->back()
+                                      ->withErrors($message)
+                                      ->withInput();
+                          }
+                      }
+
+                      $model = new $this->campaign_answer;
+
+                      $model->campaign_id = $request->campaign_id;
+                      $model->question_id = $request->question_id;
+                      $model->question_description = $questionFind->description;
+                      $model->answer_id = $answers[0];
+                      $model->answer_description = $answerFind->description;
+                      $save = $model->save();
+                    }
+                  }else{
+
+                    $answer_id = null;
+
                     $questionFind = $this->question::findOrFail($request->question_id);
-                    $answerFind = $this->answer::findOrFail($answers[0]);
+                    //criar a resposta
+                    //antes de criar verifica se ja nao tinha criado esta resposta
+                    //para esta pergunta
+                    $answer = $this->answer->whereQuestionId($request->question_id)->whereDescription($request->answer_description)->first();
+
+                    if(!$answer&&$request->save_answer=='Sim'){//se nao encontrou, cria a resposta para a questao
+
+                      $answer = new $this->answer;
+                      $answer->question_id = $request->question_id;
+                      $answer->description = $request->answer_description;
+                      $answer->status = 'Ativo';
+                      $answer->save();
+
+                      $answer_id = $answer->id;
+                    }
 
                     $model = new $this->campaign_answer;
-
                     $model->campaign_id = $request->campaign_id;
                     $model->question_id = $request->question_id;
                     $model->question_description = $questionFind->description;
-                    $model->answer_id = $answers[0];
-                    $model->answer_description = $answerFind->description;
+                    $model->answer_id = $answer_id;
+                    $model->answer_description = $request->answer_description;
                     $save = $model->save();
                   }
-                }else{
 
-                  $questionFind = $this->question::findOrFail($request->question_id);
+              }else{
+
+                $question_id = null;
+                $answer_id = null;
+                if(isset($request->save_question_answer)&&$request->save_question_answer=='Sim'){
+                  //criar a pergunta
+                  //primeiro busca uma pergunta com mesma descricao
+                  $question = $this->question->whereDescription($request->question_description)->first();
+
+                  if($question){//se encontrou uma pergunta com mesma descricao avisa com erro
+                    $message = 'Pergunta com esta Descrição ja existe! Especifique a pergunta e a resposta.';
+
+                    if ($is_api) {
+                      return response()->json(['status'=>false,'msg'=>$message]);
+                    }else{
+                      return redirect()->back()
+                                ->withErrors($message)
+                                ->withInput();
+                    }
+                  }
+
+                  $question = new $this->question;
+                  $question->description = $request->question_description;
+                  $question->status = 'Ativo';
+                  $question->multiple_choice = 0;
+                  $question->required = 'Sim';
+                  $question->tap_answer = 'Nao';
+                  $question->save();
+
+                  $question_id = $question->id;
+
                   //criar a resposta
                   $answer = new $this->answer;
-                  $answer->question_id = $request->question_id;
+                  $answer->question_id = $question->id;
                   $answer->description = $request->answer_description;
                   $answer->status = 'Ativo';
                   $answer->save();
 
-                  $model = new $this->campaign_answer;
-                  $model->campaign_id = $request->campaign_id;
-                  $model->question_id = $request->question_id;
-                  $model->question_description = $questionFind->description;
-                  $model->answer_id = $answer->id;
-                  $model->answer_description = $request->answer_description;
-                  $save = $model->save();
+                  $answer_id = $answer->id;
                 }
 
-            }else{
+                $model = new $this->campaign_answer;
 
-              $question_id = null;
-              $answer_id = null;
-              if(isset($request->save_question_answer)&&$request->save_question_answer=='Sim'){
-                //criar a pergunta
-                $question = new $this->question;
-                $question->description = $request->question_description;
-                $question->status = 'Ativo';
-                $question->multiple_choice = 0;
-                $question->required = 'Sim';
-                $question->tap_answer = 'Nao';
-                $question->save();
-
-                $question_id = $question->id;
-
-                //criar a resposta
-                $answer = new $this->answer;
-                $answer->question_id = $question->id;
-                $answer->description = $request->answer_description;
-                $answer->status = 'Ativo';
-                $answer->save();
-
-                $answer_id = $answer->id;
+                $model->campaign_id = $request->campaign_id;
+                $model->question_id = $question_id;
+                $model->question_description = $request->question_description;
+                $model->answer_id = $answer_id;
+                $model->answer_description = $request->answer_description;
+                $save = $model->save();
               }
-              $model = new $this->campaign_answer;
 
-              $model->campaign_id = $request->campaign_id;
-              $model->question_id = $question_id;
-              $model->question_description = $request->question_description;
-              $model->answer_id = $answer_id;
-              $model->answer_description = $request->answer_description;
-              $save = $model->save();
-            }
+          } catch (\Exception $e) {//errors exceptions
 
-            $response = 'Respondida com Sucesso!';
+              $response = null;
 
-            if ($is_api) {
-                return response()->json(['status'=>true,'msg'=>$response]);
-            }else{
-                return back()->with('successMsg', $response);
-            }
+              switch (get_class($e)) {
+                case QueryException::class:$response = $e->getMessage();
+                case Exception::class:$response = $e->getMessage();
+                case ValidationException::class:$response = $e;
+                default: $response = get_class($e);
+              }
 
-        } catch (\Exception $e) {//errors exceptions
+              $response = method_exists($e,'getMessage')?$e->getMessage():get_class($e);
 
-            $response = null;
+              if ($is_api) {
+                return response()->json(['status'=>false,'msg'=>$response]);
+              }else{
+                return back()->withInput($request->toArray())->withErrors($response);
+              }
 
-            switch (get_class($e)) {
-              case QueryException::class:$response = $e->getMessage();
-              case Exception::class:$response = $e->getMessage();
-              case ValidationException::class:$response = $e;
-              default: $response = get_class($e);
-            }
+          }
 
-            $response = method_exists($e,'getMessage')?$e->getMessage():get_class($e);
 
-            if ($is_api) {
-              return response()->json(['status'=>false,'msg'=>$response]);
-            }else{
-              return back()->withInput($request->toArray())->withErrors($response);
-            }
+       }
 
-        }
+       $response = 'Respondida com Sucesso!';
+
+       if ($is_api) {
+           return response()->json(['status'=>true,'msg'=>$response]);
+       }else{
+           return back()->with('successMsg', $response);
+       }
     }
     public function createCampaignAnswer(Campaign $campaign)
     {
@@ -819,8 +927,19 @@ class CampaignController extends Controller
         }
       }
 
-      $items = $campaign->campaign_answers;
+      //$items = $campaign->campaign_answers();
 
-      return view('campaign_answers.index',compact('campaign','items'));
+
+      \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->chunk(1000, function ($campaign_answers) {
+          foreach ($campaign_answers as $campaign_answer) {
+              //
+          }
+      });
+
+      $count = \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->count();
+
+      $items = \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->paginate(10);
+
+      return view('campaign_answers.index',compact('campaign','items','count'));
     }
 }

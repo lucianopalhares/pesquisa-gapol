@@ -15,4 +15,12 @@ class Answer extends Model
     {
         return $this->belongsToMany(\App\Campaign::class,'campaign_answers');
     }
+    public function campaign_answers()
+    {
+        return $this->hasMany('App\CampaignAnswer','answer_id');
+    }
+    public function campaign_answers_count()
+    {
+        return 1;
+    }
 }

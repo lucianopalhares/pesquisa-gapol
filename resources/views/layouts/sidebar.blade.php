@@ -19,9 +19,22 @@
                                 <li class="nav-item">
                                   <a class="nav-link" href="{{url('/dashboard')}}">
                                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                                    <span>Dashboard</span></a>
+                                    <span>Inicio</span></a>
                                 </li>
+                                <hr class="sidebar-divider my-0">
 
+                                <li class="nav-item">
+                                  <a class="nav-link" href="{{url('/cruzar-perguntas')}}">
+                                    <i class="fas fa-fw fa-random"></i>
+                                    <span>Cruzar Perguntas</span></a>
+                                </li>
+                                <hr class="sidebar-divider my-0">
+
+                                <li class="nav-item">
+                                  <a class="nav-link" href="{{url('/cruzar-respostas')}}">
+                                    <i class="fas fa-fw fa-text-height "></i>
+                                    <span>Funil de Respostas</span></a>
+                                </li>
 
                                 <!-- Divider -->
                                 <hr class="sidebar-divider">
