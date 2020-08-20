@@ -6,9 +6,28 @@
 
 ## Laravel 7 - Diagnóstico PERGUNTA/RESPOSTA
 
-Painel administrativo para pesquisa de diagnóstico de perguntas e respostas. Possui ACL(controle de acesso), cadastro de usuario, cadastro de diagnóstico, pergunta, respostas de cada pergunta, categoria da pergunta. Responder um diagnóstico podendo responder uma pergunta sem resposta onde a resposta e gravada automaticamente.
+Painel administrativo para pesquisa de diagnóstico:<br />
+* Diagnóstico<br />
+* Perguntas do Diagnóstico<br />
+* Categoria da Pergunta  <br />
+* Opções da Pergunta<br />
+* Respostas da Pergunta (podendo ser uma opção da pergunta ou descrição)<br />
+* Cadastro de Usuário<br />
+* ACL (controle de acesso completo: cargos e permissões dos usuários)<br />
 
-Com API completa para fazer todas as funções tambem, alem de na API poder apenas digitar uma pergunta e uma resposta e indicar se quer que salva ou não ou se quiser que apenas registre a pergunta e resposta digitadas no diagnóstico.
+* Cruzamento de Perguntas Selecionadas<br />
+<p align="center"><img src="public/img/screens/cruzamento.png" >
+</p>
+
+* Funil das Respostas Selecionadas<br />
+<p align="center"><img src="public/img/screens/funil.png" >
+</p>
+
+* Gŕaficos Pizza e Barra das Perguntas e Respostas<br />
+<p align="center"><img src="public/img/screens/chart.png" >
+</p>
+
+Com API completa para fazer todas as funções tambem.
 
 ## Instalação (comandos)
 
