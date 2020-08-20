@@ -31,9 +31,7 @@ DB_DATABASE=nomedobancodedados<br />
 DB_USERNAME=usuariodobancodedados<br />
 DB_PASSWORD=senhadobancodedados
 
-php artisan migrate (ira criar as tabelas no banco de dados)
-
-php artisan db:seed (ira criar o usuario admin para ter acesso ao sistema)
+arquivo sql para preencher banco de dados: database/data.sql
 
 Se os diretorios abaixo nao existirem devem ser criados com permissão para gravar.
 
