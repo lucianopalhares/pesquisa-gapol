@@ -58,7 +58,7 @@ arquivo sql para preencher banco de dados: database/data.sql
 
 Se os diretorios abaixo nao existirem devem ser criados com permissão para gravar.
 
-## Projeto Original
+## Projeto Finalizado Cliente
 
 https://pesquisa.gapol.com.br
 
