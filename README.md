@@ -1,4 +1,4 @@
-<p align="center"><img src="http://www.tre-rr.jus.br/imagens/fotos/tre-rr-pesquisa-eleitoral-falsa/@@images/659d9cd6-c23a-4a3b-860a-9ae16467c873.jpeg" width="400"></p>
+<p align="center"><img src="public/img/logo.png" width="400"></p>
 
 <p align="center">
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
@@ -27,7 +27,7 @@ Painel administrativo para pesquisa de diagnóstico:<br />
 <p align="center"><img src="public/img/screens/chart.png" >
 </p>
 
-Com API completa para fazer todas as funções tambem.
+* API completa para fazer todas as funções
 
 ## Instalação (comandos)
 
