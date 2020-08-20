@@ -37,6 +37,15 @@ php artisan db:seed (ira criar o usuario admin para ter acesso ao sistema)
 
 Se os diretorios abaixo nao existirem devem ser criados com permissão para gravar.
 
+## Projeto Original
+
+https://pesquisa.gapol.com.br
+
+## DEMO
+
+http://pesquisa.desenvolve.tk
+usuário: admin@admin.como
+senha: 12345678
 
 ## License
 
