@@ -60,6 +60,9 @@ Se os diretorios abaixo nao existirem devem ser criados com permissão para grav
 
 ## Projeto Finalizado Cliente
 
+<p align="center"><img src="public/img/screens/autor.jpg" >
+</p>
+
 https://pesquisa.gapol.com.br
 
 ## DEMO
