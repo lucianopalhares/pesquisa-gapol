@@ -1,4 +1,4 @@
-<p align="center"><img src="public/img/logo.png" width="400"></p>
+<p align="center"><img src="https://www.estudokids.com.br/wp-content/uploads/2014/06/censo.jpg" width="400"></p>
 
 <p align="center">
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
