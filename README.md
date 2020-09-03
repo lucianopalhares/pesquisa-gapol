@@ -58,17 +58,10 @@ arquivo sql para preencher banco de dados: database/data.sql
 
 Se os diretorios abaixo nao existirem devem ser criados com permissão para gravar.
 
-## Projeto Finalizado Cliente
-
-<p align="center"><img src="public/img/screens/autor.jpg" >
-</p>
-
-https://pesquisa.gapol.com.br
-
 ## DEMO
 
 http://pesquisa.desenvolve.tk
-usuário: admin@admin.como
+usuário: admin@admin.com
 senha: 12345678
 
 ## License

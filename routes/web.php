@@ -17,6 +17,12 @@ Route::get('/', function () {
     return redirect('/login');
 });
 
+Route::get('/updateapp', function()
+{
+    \Artisan::call('dump-autoload');
+    echo 'dump-autoload complete';
+});
+
 
 Auth::routes();
 
