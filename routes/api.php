@@ -27,7 +27,7 @@ Route::get('/login-api',function(){
   }
 })->name('login-api');
 
-Route::get('/dashboard', 'HomeController@index');
+
 Route::resource('/usuarios','UserController')->middleware('auth');
 Route::get('/usuario/{usuario}/cargos','UserController@roles')->middleware('auth');
 

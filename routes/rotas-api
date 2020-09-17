@@ -10,6 +10,7 @@ api/responder-campanha   metodo post   (RESPONDER DIAGNOSTICO)
          question_id = pergunta que vai responder
          answers  =  array com os ids das respostas selecionadas (ids da tabela answers)
 
+api/respondidas/ID-CAMPANHA   get pega as perguntas respondidas
 
 ******************************************
 

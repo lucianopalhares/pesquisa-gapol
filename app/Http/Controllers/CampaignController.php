@@ -64,7 +64,7 @@ class CampaignController extends Controller
           $items = $this->model::all();
         }
 
-        if($is_api) return response()->json($items);
+        if($is_api) return response()->json($this->model::whereStatus(1)->get());
 
         return view('campaigns.index',compact('items'));
 
@@ -499,8 +499,8 @@ class CampaignController extends Controller
           isset($value['question_description'])?$request->question_description = $value['question_description']:'';
           isset($value['answer_description'])?$request->answer_description = $value['answer_description']:'';
           isset($value['answers'])?$request->answers = $value['answers']:'';
-          isset($value['save_answer'])?$request->save_answer = $value['save_answer']:'';
-          isset($value['save_question_answer'])?$request->save_question_answer = $value['save_question_answer']:'';
+          isset($value['save_answer'])?$request->save_answer = $value['save_answer']:$request->save_answer = 'Nao';
+          isset($value['save_question_answer'])?$request->save_question_answer = $value['save_question_answer']:$request->save_question_answer = 'Nao';
 
 
             $rules = [
@@ -652,7 +652,7 @@ class CampaignController extends Controller
                       $model->answer_description = $answerFind->description;
                       $save = $model->save();
 
-                  }elseif(isset($request->answers)&&sizeof($request->answers)>0){
+                  }elseif(isset($request->answers)&&is_array($request->answers)&&count($request->answers)>0){
 
                     $answers = $request->answers;
 
