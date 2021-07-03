@@ -4,7 +4,7 @@
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
 </p>
 
-## Laravel 8 - Diagnóstico PERGUNTA/RESPOSTA
+## Laravel 8 - Diagnóstico PERGUNTA/RESPOSTA 
 
 Painel administrativo para pesquisa de diagnóstico:<br />
 
@@ -33,6 +33,14 @@ Painel administrativo para pesquisa de diagnóstico:<br />
 
 * API completa para fazer todas as funções
 
+#### Link do projeto finalizado (em produção): 
+
+https://pesquisa.gapol.com.br
+
+#### Link do projeto DEMO: 
+
+http://gapol.tk
+
 ## Instalação (comandos)
 
 git clone https://github.com/lucianopalhares/pesquisaGapol.git
@@ -60,7 +68,7 @@ Se os diretorios abaixo nao existirem devem ser criados com permissão para grav
 
 ## DEMO
 
-http://pesquisa.desenvolve.tk
+http://gapol.tk/
 usuário: admin@admin.com
 senha: 12345678
 
