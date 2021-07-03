@@ -4,7 +4,7 @@
 <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License"></a>
 </p>
 
-## Laravel 7 - Diagnóstico PERGUNTA/RESPOSTA
+## Laravel 8 - Diagnóstico PERGUNTA/RESPOSTA
 
 Painel administrativo para pesquisa de diagnóstico:<br />
 
