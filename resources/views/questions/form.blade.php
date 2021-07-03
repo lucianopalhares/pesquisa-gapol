@@ -59,10 +59,10 @@
                       <label class="control-label">Digitar Resposta *</label>
                       <select {{isset($show)?"disabled='disabled'":''}} required="required" onchange="tapAnswer(this.value)" class="form-control" name="tap_answer">
 
-                            <option value="Nao" {{ old('tap_answer') == 'Nao' ? "selected='selected'" : isset($item->tap_answer) && $item->tap_answer == 'Nao' ? "selected='selected'" : '' }}>
+                            <option value="Nao" {{ old('tap_answer') == 'Nao' ? "selected='selected'" : (isset($item->tap_answer) && $item->tap_answer == 'Nao' ? "selected='selected'" : '') }}>
                                 Não Digitar, a resposta sera selecionada
                             </option>
-                            <option value="Sim" {{ old('tap_answer') == 'Sim' ? "selected='selected'" : isset($item->tap_answer) && $item->tap_answer == 'Sim' ? "selected='selected'" : '' }}>
+                            <option value="Sim" {{ old('tap_answer') == 'Sim' ? "selected='selected'" : (isset($item->tap_answer) && $item->tap_answer == 'Sim' ? "selected='selected'" : '') }}>
                               Sim, digitará uma resposta
                             </option>
                       </select>
@@ -73,10 +73,10 @@
                                 <div class="form-group label-floating">
                                     <label class="control-label">Multipla Escolha </label>
                                     <select {{isset($show)?"disabled='disabled'":''}} required="required" class="form-control" name="multiple_choice">
-                                          <option value="1" {{ old('multiple_choice') == '1' ? "selected='selected'" : isset($item->multiple_choice) && $item->multiple_choice == '1' ? "selected='selected'" : '' }}>
+                                          <option value="1" {{ old('multiple_choice') == '1' ? "selected='selected'" : (isset($item->multiple_choice) && $item->multiple_choice == '1' ? "selected='selected'" : '') }}>
                                             Sim, Escolher Mais de Uma
                                           </option>
-                                          <option value="0" {{ old('multiple_choice') == '0' ? "selected='selected'" : isset($item->multiple_choice) && $item->multiple_choice == '0' ? "selected='selected'" : '' }}>
+                                          <option value="0" {{ old('multiple_choice') == '0' ? "selected='selected'" : (isset($item->multiple_choice) && $item->multiple_choice == '0' ? "selected='selected'" : '') }}>
                                               Não, Apenas Uma Escolha
                                           </option>
                                     </select>
@@ -88,10 +88,10 @@
                   <div class="form-group label-floating">
                       <label class="control-label">Status *</label>
                       <select {{isset($show)?"disabled='disabled'":''}} required="required" class="form-control" name="status">
-                            <option value="Inativo" {{ old('status') == 'Inativo' ? "selected='selected'" : isset($item->status) && $item->status == 'Inativo' ? "selected='selected'" : '' }}>
+                            <option value="Inativo" {{ old('status') == 'Inativo' ? "selected='selected'" : (isset($item->status) && $item->status == 'Inativo' ? "selected='selected'" : '') }}>
                               Inativo
                             </option>
-                            <option value="Ativo" {{ old('status') == 'Ativo' ? "selected='selected'" : isset($item->status) && $item->status == 'Ativo' ? "selected='selected'" : '' }}>
+                            <option value="Ativo" {{ old('status') == 'Ativo' ? "selected='selected'" : (isset($item->status) && $item->status == 'Ativo' ? "selected='selected'" : '') }}>
                                 Ativo
                             </option>
                       </select>
@@ -101,10 +101,10 @@
                   <div class="form-group label-floating">
                       <label class="control-label">Obrigatório Responder *</label>
                       <select {{isset($show)?"disabled='disabled'":''}} required="required" class="form-control" name="required">
-                            <option value="Sim" {{ old('required') == 'Sim' ? "selected='selected'" : isset($item->required) && $item->required == 'Sim' ? "selected='selected'" : '' }}>
+                            <option value="Sim" {{ old('required') == 'Sim' ? "selected='selected'" : (isset($item->required) && $item->required == 'Sim' ? "selected='selected'" : '') }}>
                               Sim, Precisa Responder esta Pergunta
                             </option>
-                            <option value="Nao" {{ old('required') == 'Nao' ? "selected='selected'" : isset($item->required) && $item->required == 'Nao' ? "selected='selected'" : '' }}>
+                            <option value="Nao" {{ old('required') == 'Nao' ? "selected='selected'" : (isset($item->required) && $item->required == 'Nao' ? "selected='selected'" : '') }}>
                                 Não, Nao precisa responder esta Pergunta
                             </option>
                       </select>

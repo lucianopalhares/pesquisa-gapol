@@ -18,7 +18,7 @@ class CityController extends Controller
 {
     protected $model;
 
-    public function __construct(\App\City $model){
+    public function __construct(\App\Models\City $model){
       $this->model = $model;
     }
     /**

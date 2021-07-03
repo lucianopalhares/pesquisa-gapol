@@ -49,7 +49,7 @@
                           <option value=" ">Selecione</option>
                             @foreach($users as $user)
                               @if(!$user->hasAnyRoles('admin'))
-                                <option value="{{$user->id}}" {{ old('user_id') == $user->id ? "selected='selected'" : isset($item->user_id) && $item->user_id == $user->id ? "selected='selected'" : '' }}>
+                                <option value="{{$user->id}}" {{ old('user_id') == $user->id ? "selected='selected'" : (isset($item->user_id) && $item->user_id == $user->id ? "selected='selected'" : '') }}>
                                   {{$user->name}}
                                 </option>
                               @endif
@@ -64,7 +64,7 @@
                           <option value=" ">Selecione</option>
                             @foreach($roles as $role)
 
-                                <option value="{{$role->id}}" {{ old('role_id') == $role->id ? "selected='selected'" : isset($item->role_id) && $item->role_id == $role->id ? "selected='selected'" : '' }}>
+                                <option value="{{$role->id}}" {{ old('role_id') == $role->id ? "selected='selected'" : (isset($item->role_id) && $item->role_id == $role->id ? "selected='selected'" : '') }}>
                                   {{$role->name}}
                                 </option>
 

@@ -13,8 +13,8 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\Campaign;
-use App\Question;
+use App\Models\Campaign;
+use App\Models\Question;
 
 class CampaignController extends Controller
 {
@@ -26,10 +26,10 @@ class CampaignController extends Controller
 
     public function __construct(Campaign $model){
       $this->model = $model;
-      $this->city = \App::make('App\City');
-      $this->question = \App::make('App\Question');
-      $this->answer = \App::make('App\Answer');
-      $this->campaign_answer = \App::make('App\CampaignAnswer');
+      $this->city = \App::make('App\Models\City');
+      $this->question = \App::make('App\Models\Question');
+      $this->answer = \App::make('App\Models\Answer');
+      $this->campaign_answer = \App::make('App\Models\CampaignAnswer');
     }
     /**
      * Display a listing of the resource.
@@ -930,15 +930,15 @@ class CampaignController extends Controller
       //$items = $campaign->campaign_answers();
 
 
-      \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->chunk(1000, function ($campaign_answers) {
+      \App::make('App\Models\CampaignAnswer')->whereCampaignId($campaign->id)->chunk(1000, function ($campaign_answers) {
           foreach ($campaign_answers as $campaign_answer) {
               //
           }
       });
 
-      $count = \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->count();
+      $count = \App::make('App\Models\CampaignAnswer')->whereCampaignId($campaign->id)->count();
 
-      $items = \App::make('App\CampaignAnswer')->whereCampaignId($campaign->id)->paginate(10);
+      $items = \App::make('App\Models\CampaignAnswer')->whereCampaignId($campaign->id)->paginate(10);
 
       return view('campaign_answers.index',compact('campaign','items','count'));
     }

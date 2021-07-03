@@ -65,7 +65,7 @@
                         <option value=" ">Selecione</option>
                           @foreach($questions as $question)
 
-                              <option value="{{$question->id}}" {{ old('question_id') == $question->id ? "selected='selected'" : isset($item->question_id) && $item->question_id == $question->id ? "selected='selected'" : '' }}>
+                              <option value="{{$question->id}}" {{ old('question_id') == $question->id ? "selected='selected'" : (isset($item->question_id) && $item->question_id == $question->id ? "selected='selected'" : '') }}>
                                 {{$question->description}}
                               </option>
 
@@ -88,10 +88,10 @@
                   <div class="form-group label-floating">
                       <label class="control-label">Status *</label>
                       <select {{isset($show)?"disabled='disabled'":''}} required="required" class="form-control" name="status">
-                            <option value="Inativo" {{ old('status') == 'Inativo' ? "selected='selected'" : isset($item->status) && $item->status == 'Inativo' ? "selected='selected'" : '' }}>
+                            <option value="Inativo" {{ old('status') == 'Inativo' ? "selected='selected'" : (isset($item->status) && $item->status == 'Inativo' ? "selected='selected'" : '') }}>
                               Inativo
                             </option>
-                            <option value="Ativo" {{ old('status') == 'Ativo' ? "selected='selected'" : isset($item->status) && $item->status == 'Ativo' ? "selected='selected'" : '' }}>
+                            <option value="Ativo" {{ old('status') == 'Ativo' ? "selected='selected'" : (isset($item->status) && $item->status == 'Ativo' ? "selected='selected'" : '') }}>
                                 Ativo
                             </option>
                       </select>

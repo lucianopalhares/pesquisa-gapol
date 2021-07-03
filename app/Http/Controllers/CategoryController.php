@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\Category;
+use App\Models\Category;
 
 class CategoryController extends Controller
 {
@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function __construct(Category $model){
       $this->model = $model;
-      //$this->payment_way = \App::make('App\PaymentWay');
+      //$this->payment_way = \App::make('App\Models\PaymentWay');
     }
     /**
      * Display a listing of the resource.

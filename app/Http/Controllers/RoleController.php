@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\Role;
+use App\Models\Role;
 
 class RoleController extends Controller
 {
@@ -26,11 +26,11 @@ class RoleController extends Controller
 
     public function __construct(Role $model){
       $this->model = $model;
-      $this->permission_role = \App::make('App\PermissionRole');
-      $this->role_user = \App::make('App\RoleUser');
-      $this->role = \App::make('App\Role');
-      $this->permission = \App::make('App\Permission');
-      $this->user = \App::make('App\User');
+      $this->permission_role = \App::make('App\Models\PermissionRole');
+      $this->role_user = \App::make('App\Models\RoleUser');
+      $this->role = \App::make('App\Models\Role');
+      $this->permission = \App::make('App\Models\Permission');
+      $this->user = \App::make('App\Models\User');
     }
     /**
      * Display a listing of the resource.

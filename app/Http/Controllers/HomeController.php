@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Question;
-use App\CampaignAnswer;
-use App\Campaign;
+use App\Models\Question;
+use App\Models\CampaignAnswer;
+use App\Models\Campaign;
 
 class HomeController extends Controller
 {
@@ -17,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->question = \App::Make('\App\Question');
+        $this->question = \App::Make('\App\Models\Question');
     }
 
     /**
@@ -27,10 +27,10 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $questions = \App\Question::all();
-        $campaigns = \App\Campaign::all();
-        $users = \App\User::all();
-        $roles = \App\Role::all();
+        $questions = \App\Models\Question::all();
+        $campaigns = \App\Models\Campaign::all();
+        $users = \App\Models\User::all();
+        $roles = \App\Models\Role::all();
 
         return view('home',compact('questions','campaigns','users','roles'));
     }
@@ -59,7 +59,7 @@ class HomeController extends Controller
         }
         $campaign = null;
         if(isset($request->campanha)){
-          $campaign = \App\Campaign::find($request->campanha);
+          $campaign = \App\Models\Campaign::find($request->campanha);
           if($campaign) $campaign = $campaign;
         }
 
@@ -94,7 +94,7 @@ class HomeController extends Controller
     }
     public function test()
     {
-      $quizModelQuestion = \App\AnswerDetail::whereHas('quizModelQuestion',function($query){
+      $quizModelQuestion = \App\Models\AnswerDetail::whereHas('quizModelQuestion',function($query){
         $query->where('ResponseType',50);
       })->get();
 
@@ -124,15 +124,15 @@ class HomeController extends Controller
     }
     protected function saveInterviewee($min,$max){
 
-      $answer_details = \App\AnswerDetail::where('ID','>=',$min)->where('ID','<=',$max)->get();
+      $answer_details = \App\Models\AnswerDetail::where('ID','>=',$min)->where('ID','<=',$max)->get();
 
       foreach ($answer_details as $k => $v) {
 
-        $inter = new \App\Interviewee;
+        $inter = new \App\Models\Interviewee;
         $inter->id = $v->IDAnswer;
         $inter->campaign_id = 1;
 
-        $count = \App\Interviewee::whereId($v->IDAnswer)->count();
+        $count = \App\Models\Interviewee::whereId($v->IDAnswer)->count();
         if(!$count){
           $inter->save();
         }
@@ -146,13 +146,13 @@ class HomeController extends Controller
       $no_save = 0;
       $no_find_question = 0;
 
-      $answer_details = \App\AnswerDetail::where('ID','>=',$min)->where('ID','<=',$max)->get();
+      $answer_details = \App\Models\AnswerDetail::where('ID','>=',$min)->where('ID','<=',$max)->get();
       //return $answer_details->count();
       foreach ($answer_details as $k => $v) {
 
         if(strlen($v->Response)>0&&isset($v->IDQuizModelQuestion)){
 
-          $q = \App\Question::find($v->IDQuizModelQuestion);
+          $q = \App\Models\Question::find($v->IDQuizModelQuestion);
 
           if($q){
 
@@ -162,7 +162,7 @@ class HomeController extends Controller
               //salva resposta
               if($v->quizModelQuestion->ResponseType=='50'){
 
-                $exists_answer_question = \App\Answer::whereQuestionId($v->IDQuizModelQuestion)->whereDescription($v->Response)->first();
+                $exists_answer_question = \App\Models\Answer::whereQuestionId($v->IDQuizModelQuestion)->whereDescription($v->Response)->first();
 
                 if(isset($exists_answer_question->id)){
 
@@ -170,7 +170,7 @@ class HomeController extends Controller
 
                 }else{//se nao encontrar salva resposta
 
-                  $answer = new \App\Answer;
+                  $answer = new \App\Models\Answer;
                   $answer->question_id = $v->IDQuizModelQuestion;
                   $answer->description = $v->Response;
                   $answer->save();
@@ -179,7 +179,7 @@ class HomeController extends Controller
                 }
               }
 
-              $campaign_answer = new \App\CampaignAnswer;
+              $campaign_answer = new \App\Models\CampaignAnswer;
 
               $campaign_answer->interviewee_id = $v->IDAnswer;
               $campaign_answer->campaign_id = 1;

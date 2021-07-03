@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Exception;
-use App\Campaign;
+use App\Models\Campaign;
 
 class ChartController extends Controller
 {
@@ -19,8 +19,8 @@ class ChartController extends Controller
      */
     public function __construct()
     {
-        $this->campaign = \App::Make('App\Campaign');
-        $this->question = \App::Make('App\Question');
+        $this->campaign = \App::Make('App\Models\Campaign');
+        $this->question = \App::Make('App\Models\Question');
     }
 
     /**

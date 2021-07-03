@@ -83,7 +83,7 @@
                         <option value=" ">Selecione</option>
                           @foreach($cities as $city)
 
-                              <option value="{{$city->id}}" {{ old('city_id') == $city->id ? "selected='selected'" : isset($item->city_id) && $item->city_id == $city->id ? "selected='selected'" : '' }}>
+                              <option value="{{$city->id}}" {{ old('city_id') == $city->id ? "selected='selected'" : (isset($item->city_id) && $item->city_id == $city->id ? "selected='selected'" : '') }}>
                                 {{$city->name}}/{{$city->state}}
                               </option>
 
@@ -113,13 +113,13 @@
                   <div class="form-group label-floating">
                       <label class="control-label">Status *</label>
                       <select {{isset($show)?"disabled='disabled'":''}} required="required" class="form-control" name="status">
-                        <option value="Ativa por Data" {{ old('status') == 'Ativa por Data' ? "selected='selected'" : isset($item->status) && $item->status == 'Ativa por Data' ? "selected='selected'" : '' }}>
+                        <option value="Ativa por Data" {{ old('status') == 'Ativa por Data' ? "selected='selected'" : (isset($item->status) && $item->status == 'Ativa por Data' ? "selected='selected'" : '') }}>
                             Ativa somente entre as datas Inicio/Fim
                         </option>
-                        <option value="Inativa" {{ old('status') == 'Inativa' ? "selected='selected'" : isset($item->status) && $item->status == 'Inativa' ? "selected='selected'" : '' }}>
+                        <option value="Inativa" {{ old('status') == 'Inativa' ? "selected='selected'" : (isset($item->status) && $item->status == 'Inativa' ? "selected='selected'" : '') }}>
                               Inativa
                             </option>
-                            <option value="Ativa" {{ old('status') == 'Ativa' ? "selected='selected'" : isset($item->status) && $item->status == 'Ativa' ? "selected='selected'" : '' }}>
+                            <option value="Ativa" {{ old('status') == 'Ativa' ? "selected='selected'" : (isset($item->status) && $item->status == 'Ativa' ? "selected='selected'" : '') }}>
                                 Ativa
                             </option>
                       </select>

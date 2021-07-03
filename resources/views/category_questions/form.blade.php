@@ -48,7 +48,7 @@
                         <select required="required" class="form-control" name="category_id">
                           <option value=" ">Selecione</option>
                             @foreach($categories as $category)
-                                <option value="{{$category->id}}" {{ old('category_id') == $category->id ? "selected='selected'" : isset($item->category_id) && $item->category_id == $category->id ? "selected='selected'" : '' }}>
+                                <option value="{{$category->id}}" {{ old('category_id') == $category->id ? "selected='selected'" : (isset($item->category_id) && $item->category_id == $category->id ? "selected='selected'" : '') }}>
                                   {{$category->name}}
                                 </option>
                             @endforeach
@@ -64,7 +64,7 @@
                           <option value=" ">Selecione</option>
                             @foreach($questions as $question)
 
-                                <option value="{{$question->id}}" {{ old('question_id') == $question->id ? "selected='selected'" : isset($item->question_id) && $item->question_id == $question->id ? "selected='selected'" : '' }}>
+                                <option value="{{$question->id}}" {{ old('question_id') == $question->id ? "selected='selected'" : (isset($item->question_id) && $item->question_id == $question->id ? "selected='selected'" : '') }}>
                                   ({{$question->id}}): {{$question->description}}
                                 </option>
 

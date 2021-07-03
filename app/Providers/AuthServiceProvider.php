@@ -6,8 +6,8 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GatePolice;
 
-use App\User;
-use App\Permission;
+use App\Models\User;
+use App\Models\Permission;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -17,7 +17,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        // 'App\Model' => 'App\Policies\ModelPolicy',
+        // 'App\Models\Model' => 'App\Policies\ModelPolicy',
     ];
 
     /**

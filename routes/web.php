@@ -76,3 +76,7 @@ Route::resource('/campanha-respostas','CampaignAnswerController')->middleware('a
 //cruzar Respostas
 Route::get('/cruzar-respostas','CruzeAnswerController@create')->middleware('auth');
 Route::get('/cruzar-perguntas','CruzeQuestionController@create')->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

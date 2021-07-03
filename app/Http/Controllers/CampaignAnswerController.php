@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\CampaignAnswer;
+use App\Models\CampaignAnswer;
 
 class CampaignAnswerController extends Controller
 {

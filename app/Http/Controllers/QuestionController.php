@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\Question;
+use App\Models\Question;
 
 class QuestionController extends Controller
 {
@@ -23,8 +23,8 @@ class QuestionController extends Controller
 
     public function __construct(Question $model){
       $this->model = $model;
-      $this->category = \App::make('App\Category');
-      $this->category_question = \App::make('App\CategoryQuestion');
+      $this->category = \App::make('App\Models\Category');
+      $this->category_question = \App::make('App\Models\CategoryQuestion');
     }
     /**
      * Display a listing of the resource.

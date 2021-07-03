@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\Answer;
+use App\Models\Answer;
 
 class AnswerController extends Controller
 {
@@ -22,7 +22,7 @@ class AnswerController extends Controller
 
     public function __construct(Answer $model){
       $this->model = $model;
-      $this->question = \App::make('App\Question');
+      $this->question = \App::make('App\Models\Question');
     }
     /**
      * Display a listing of the resource.

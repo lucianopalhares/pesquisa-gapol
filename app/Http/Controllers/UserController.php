@@ -13,7 +13,7 @@ use Illuminate\Validation\ValidationException;
 use Exception;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Hash;
-use App\User;
+use App\Models\User;
 
 class UserController extends Controller
 {
@@ -22,7 +22,7 @@ class UserController extends Controller
 
     public function __construct(User $model){
       $this->model = $model;
-      $this->city = \App::make('App\City');
+      $this->city = \App::make('App\Models\City');
     }
     /**
      * Display a listing of the resource.

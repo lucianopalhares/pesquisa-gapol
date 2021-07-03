@@ -6,8 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Exception;
-use App\Campaign;
-use App\Question;
+use App\Models\Campaign;
+use App\Models\Question;
 
 class CruzeAnswerController extends Controller
 {
@@ -21,9 +21,9 @@ class CruzeAnswerController extends Controller
      */
     public function __construct()
     {
-        $this->campaign = \App::Make('App\Campaign');
-        $this->question = \App::Make('App\Question');
-        $this->campaign_answer = \App::Make('App\CampaignAnswer');
+        $this->campaign = \App::Make('App\Models\Campaign');
+        $this->question = \App::Make('App\Models\Question');
+        $this->campaign_answer = \App::Make('App\Models\CampaignAnswer');
     }
 
     /**

@@ -48,7 +48,7 @@
                         <select required="required" class="form-control" name="permission_id">
                           <option value=" ">Selecione</option>
                             @foreach($permissions as $permission)
-                                <option value="{{$permission->id}}" {{ old('permission_id') == $permission->id ? "selected='selected'" : isset($item->permission_id) && $item->permission_id == $permission->id ? "selected='selected'" : '' }}>
+                                <option value="{{$permission->id}}" {{ old('permission_id') == $permission->id ? "selected='selected'" : (isset($item->permission_id) && $item->permission_id == $permission->id ? "selected='selected'" : '') }}>
                                   {{$permission->name}}
                                 </option>
                             @endforeach
@@ -62,7 +62,7 @@
                           <option value=" ">Selecione</option>
                             @foreach($roles as $role)
                               @if($role->slug!='admin')
-                                <option value="{{$role->id}}" {{ old('role_id') == $role->id ? "selected='selected'" : isset($item->role_id) && $item->role_id == $role->id ? "selected='selected'" : '' }}>
+                                <option value="{{$role->id}}" {{ old('role_id') == $role->id ? "selected='selected'" : (isset($item->role_id) && $item->role_id == $role->id ? "selected='selected'" : '') }}>
                                   {{$role->name}}
                                 </option>
                               @endif
