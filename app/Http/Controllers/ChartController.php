@@ -96,7 +96,7 @@ class ChartController extends Controller
         }else{
             $questions = $this->question::whereHas('campaigns',function($query) use ($campaign){
               $query->where('campaign_id',$campaign->id);
-            })->get();
+            })->take(1)->get();
 
 
         }
