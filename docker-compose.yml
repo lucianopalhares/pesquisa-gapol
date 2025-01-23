@@ -4,8 +4,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: laravel-app
-    container_name: laravel-app
+    image: pesquisa-gapol
+    container_name: pesquisa-gapol
     ports:
       - "8000:80"
     volumes:
@@ -25,24 +25,19 @@ services:
 
   db:
     image: mysql:8.0
-    container_name: laravel-db
+    container_name: pesquisa-gapol-db
     ports:
-      - "3306:3306"
+      - "3338:3306"
+    expose:
+      - 3306
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: laravel
       MYSQL_USER: root
       MYSQL_PASSWORD: secret
     volumes:
+      - ./database/data.sql:/data/data.sql
       - db_data:/var/lib/mysql
-
-  node:
-    image: node:18
-    container_name: laravel-node
-    working_dir: /var/www/html
-    volumes:
-      - .:/var/www/html
-    command: ["npm", "install"]
 
 volumes:
   db_data:
